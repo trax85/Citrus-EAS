@@ -53,6 +53,8 @@ struct mnt_namespace;
 
 #define MNT_INTERNAL	0x4000
 
+#define MNT_LOCK_READONLY	0x400000
+
 #define MNT_LOCK_ATIME		0x040000
 #define MNT_LOCK_NOEXEC		0x080000
 #define MNT_LOCK_NOSUID		0x100000
