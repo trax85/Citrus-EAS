@@ -301,6 +301,61 @@ static inline int ktime_compare(const ktime_t cmp1, const ktime_t cmp2)
 	return 0;
 }
 
+#if BITS_PER_LONG < 64
+extern s64 __ktime_divns(const ktime_t kt, s64 div);
+static inline s64 ktime_divns(const ktime_t kt, s64 div)
+{
+	/*
+	 * Negative divisors could cause an inf loop,
+	 * so bug out here.
+	 */
+	BUG_ON(div < 0);
+	if (__builtin_constant_p(div) && !(div >> 32)) {
+		s64 ns = kt.tv64;
+		u64 tmp = ns < 0 ? -ns : ns;
+
+		do_div(tmp, div);
+		return ns < 0 ? -tmp : tmp;
+	} else {
+		return __ktime_divns(kt, div);
+	}
+}
+#else /* BITS_PER_LONG < 64 */
+static inline s64 ktime_divns(const ktime_t kt, s64 div)
+{
+	/*
+	 * 32-bit implementation cannot handle negative divisors,
+	 * so catch them on 64bit as well.
+	 */
+	WARN_ON(div < 0);
+	return kt.tv64 / div;
+}
+#endif
+
+/**
+ * ktime_after - Compare if a ktime_t value is bigger than another one.
+ * @cmp1:	comparable1
+ * @cmp2:	comparable2
+ *
+ * Return: true if cmp1 happened after cmp2.
+ */
+static inline bool ktime_after(const ktime_t cmp1, const ktime_t cmp2)
+{
+	return ktime_compare(cmp1, cmp2) > 0;
+}
+
+/**
+ * ktime_before - Compare if a ktime_t value is smaller than another one.
+ * @cmp1:	comparable1
+ * @cmp2:	comparable2
+ *
+ * Return: true if cmp1 happened before cmp2.
+ */
+static inline bool ktime_before(const ktime_t cmp1, const ktime_t cmp2)
+{
+	return ktime_compare(cmp1, cmp2) < 0;
+}
+
 static inline s64 ktime_to_us(const ktime_t kt)
 {
 	struct timeval tv = ktime_to_timeval(kt);
