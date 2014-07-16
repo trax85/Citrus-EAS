@@ -1296,34 +1296,34 @@ struct sched_statistics {
 	u64			nr_wakeups_passive;
 	u64			nr_wakeups_idle;
 
-	/* select_idle_sibling() */
-	u64			nr_wakeups_sis_attempts;
-	u64			nr_wakeups_sis_idle;
-	u64			nr_wakeups_sis_cache_affine;
-	u64			nr_wakeups_sis_suff_cap;
-	u64			nr_wakeups_sis_idle_cpu;
-	u64			nr_wakeups_sis_count;
+        /* select_idle_sibling() */
+ 	u64			nr_wakeups_sis_attempts;
+ 	u64			nr_wakeups_sis_idle;
+ 	u64			nr_wakeups_sis_cache_affine;
+ 	u64			nr_wakeups_sis_suff_cap;
+ 	u64			nr_wakeups_sis_idle_cpu;
+ 	u64			nr_wakeups_sis_count;
 
-	/* energy_aware_wake_cpu() */
-	u64			nr_wakeups_secb_attempts;
-	u64			nr_wakeups_secb_sync;
-	u64			nr_wakeups_secb_idle_bt;
-	u64			nr_wakeups_secb_insuff_cap;
-	u64			nr_wakeups_secb_no_nrg_sav;
-	u64			nr_wakeups_secb_nrg_sav;
-	u64			nr_wakeups_secb_count;
+ 	/* energy_aware_wake_cpu() */
+ 	u64			nr_wakeups_secb_attempts;
+ 	u64			nr_wakeups_secb_sync;
+ 	u64			nr_wakeups_secb_idle_bt;
+ 	u64			nr_wakeups_secb_insuff_cap;
+ 	u64			nr_wakeups_secb_no_nrg_sav;
+ 	u64			nr_wakeups_secb_nrg_sav;
+ 	u64			nr_wakeups_secb_count;
 
-	/* find_best_target() */
-	u64			nr_wakeups_fbt_attempts;
-	u64			nr_wakeups_fbt_no_cpu;
-	u64			nr_wakeups_fbt_no_sd;
-	u64			nr_wakeups_fbt_pref_idle;
-	u64			nr_wakeups_fbt_count;
+ 	/* find_best_target() */
+ 	u64			nr_wakeups_fbt_attempts;
+ 	u64			nr_wakeups_fbt_no_cpu;
+ 	u64			nr_wakeups_fbt_no_sd;
+ 	u64			nr_wakeups_fbt_pref_idle;
+ 	u64			nr_wakeups_fbt_count;
 
-	/* cas */
-	/* select_task_rq_fair() */
-	u64			nr_wakeups_cas_attempts;
-	u64			nr_wakeups_cas_count;
+ 	/* cas */
+ 	/* select_task_rq_fair() */
+ 	u64			nr_wakeups_cas_attempts;
+ 	u64			nr_wakeups_cas_count;
 };
 #endif
 
@@ -1402,6 +1402,10 @@ struct sched_rt_entity {
 	unsigned short on_rq;
 	unsigned short on_list;
 
+	struct hrtimer schedtune_timer;
+
+	/* Accesses for these must be guarded by rq->lock of the task's rq */
+	bool schedtune_enqueued;
 	struct sched_rt_entity *back;
 #ifdef CONFIG_RT_GROUP_SCHED
 	struct sched_rt_entity	*parent;
@@ -1649,7 +1653,7 @@ struct task_struct {
 #endif
 	unsigned long nvcsw, nivcsw; /* context switch counts */
 	struct timespec start_time;		/* monotonic time in nsec */
-	struct timespec real_start_time;	/* boot based time in nsec */
+ 	u64 real_start_time;	/* boot based time in nsec */
 /* mm fault and swap info: this can arguably be seen as either mm-specific or thread-specific */
 	unsigned long min_flt, maj_flt;
 
@@ -1921,6 +1925,12 @@ struct task_struct {
 	unsigned long trace_recursion;
 #endif /* CONFIG_TRACING */
 #ifdef CONFIG_MEMCG /* memcg uses this to do batch job */
+  struct memcg_batch_info {
+ 		int do_batch;	/* incremented when batch uncharge started */
+ 		struct mem_cgroup *memcg; /* target memcg of uncharge */
+ 		unsigned long nr_pages;	/* uncharged usage */
+ 		unsigned long memsw_nr_pages; /* uncharged mem+swap usage */
+ 	} memcg_batch;
 	unsigned int memcg_kmem_skip_account;
 	struct memcg_oom_info {
 		struct mem_cgroup *memcg;
