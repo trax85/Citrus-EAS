@@ -314,12 +314,12 @@ destroy_conntrack(struct nf_conntrack *nfct)
 
 	local_bh_disable();
 
-	pr_debug("freeing item in the SIP list\n");
 	if (ct->sip_segment_list.next != NULL)
 		list_for_each_safe(sip_node_list, sip_node_save_list,
 				   &ct->sip_segment_list) {
 			sip_node = list_entry(sip_node_list,
 					      struct sip_list, list);
+			pr_debug("freeing item in the SIP list\n");
 			list_del(&sip_node->list);
 			kfree(sip_node);
 		}
