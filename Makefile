@@ -622,6 +622,8 @@ KBUILD_CFLAGS   += $(call cc-disable-warning,format-truncation,)
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
 
+KBUILD_CFLAGS	+= $(call cc-disable-warning,frame-address,)
+
 ifdef CONFIG_READABLE_ASM
 # Disable optimizations that make assembler listings hard to read.
 # reorder blocks reorders the control in the function
