@@ -377,7 +377,10 @@ KBUILD_CPPFLAGS := -D__KERNEL__
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
+		   -g0 -DNDEBUG -fmodulo-sched -fivopts \
+		   -fmodulo-sched-allow-regmoves \
+		   -fno-asynchronous-unwind-tables \
+		   -Wno-format-security -Wno-format \
 		   -fno-delete-null-pointer-checks \
 		   -std=gnu89 -fdiagnostics-color=always
 
