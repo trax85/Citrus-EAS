@@ -29,6 +29,7 @@
 #include <glink_private.h>
 #include <linux/switch.h>
 #include <linux/moduleparam.h>
+#include <linux/jack_state.h>
 #include <sound/soc.h>
 #include <sound/jack.h>
 #include "wcd-mbhc-v2.h"
@@ -87,6 +88,13 @@ static void wcd_mbhc_jack_report(struct wcd_mbhc *mbhc,
 				struct snd_soc_jack *jack, int status, int mask)
 {
 	snd_soc_jack_report(jack, status, mask);
+}
+
+bool jack_connected = false;
+
+bool jack_detect(void)
+{
+	return jack_connected;
 }
 
 static void __hphocp_off_report(struct wcd_mbhc *mbhc, u32 jack_status,
@@ -595,6 +603,7 @@ static void wcd_mbhc_report_plug(struct wcd_mbhc *mbhc, int insertion,
 		hphrocp_off_report(mbhc, SND_JACK_OC_HPHR);
 		hphlocp_off_report(mbhc, SND_JACK_OC_HPHL);
 		mbhc->current_plug = MBHC_PLUG_TYPE_NONE;
+		jack_connected = false;
 	} else {
 		/*
 		 * Report removal of current jack type.
@@ -625,6 +634,7 @@ static void wcd_mbhc_report_plug(struct wcd_mbhc *mbhc, int insertion,
 				 __func__, mbhc->hph_status);
 			wcd_mbhc_jack_report(mbhc, &mbhc->headset_jack,
 					    0, WCD_MBHC_JACK_MASK);
+			jack_connected = false;
 
 			if (mbhc->hph_status == SND_JACK_LINEOUT) {
 
@@ -721,6 +731,7 @@ static void wcd_mbhc_report_plug(struct wcd_mbhc *mbhc, int insertion,
 					    (mbhc->hph_status |
 						SND_JACK_MECHANICAL),
 					    WCD_MBHC_JACK_MASK);
+			jack_connected = true;
 		} else {
 			pr_debug("%s: Skip reporting insertion\n", __func__);
 		}
