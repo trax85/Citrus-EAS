@@ -637,16 +637,6 @@ LDFLAGS		+= --strip-debug -O2
 KBUILD_CFLAGS	+= $(call cc-option,-mlow-precision-recip-sqrt,) \
 		   $(call cc-option,-mpc-relative-literal-loads,)
 
-# Disable format-truncation warnings
-KBUILD_CFLAGS   += $(call cc-disable-warning,format-truncation,)
-
-# Disable all buggy detection warnings
-KBUILD_CFLAGS   += $(call cc-disable-warning,incompatible-pointer-types,)
-KBUILD_CFLAGS   += $(call cc-disable-warning,unused-const-variable,)
-
-# Disable misleading warnings
-KBUILD_CFLAGS   += $(call cc-disable-warning,misleading-indentation,)
-
 include $(srctree)/arch/$(SRCARCH)/Makefile
 
 KBUILD_CFLAGS	+= $(call cc-disable-warning,frame-address,)
