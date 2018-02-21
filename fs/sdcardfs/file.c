@@ -378,7 +378,6 @@ out:
 	return err;
 }
 
-
 const struct file_operations sdcardfs_main_fops = {
 	.llseek		= generic_file_llseek,
 	.read		= sdcardfs_read,
