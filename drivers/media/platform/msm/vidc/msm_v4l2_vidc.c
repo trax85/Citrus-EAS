@@ -541,6 +541,11 @@ static int msm_vidc_probe(struct platform_device *pdev)
 	const u32 version_mask = 0x60000000;
 	const u32 version_shift = 29;
 
+	if (!vidc_driver) {
+		dprintk(VIDC_ERR, "Invalid vidc driver\n");
+		return -EINVAL;
+	}
+
 	core = kzalloc(sizeof(*core), GFP_KERNEL);
 	if (!core || !vidc_driver) {
 		dprintk(VIDC_ERR,
