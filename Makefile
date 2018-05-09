@@ -633,9 +633,6 @@ KBUILD_CFLAGS   += $(call cc-disable-warning,misleading-indentation,)
 # Disable format-truncation warnings
 KBUILD_CFLAGS   += $(call cc-disable-warning,format-truncation,)
 
-# Needed to unbreak GCC 7.x and above
-KBUILD_CFLAGS   += $(call cc-option,-fno-store-merging,)
-
 include $(srctree)/arch/$(SRCARCH)/Makefile
 
 KBUILD_CFLAGS	+= $(call cc-disable-warning,frame-address,)
