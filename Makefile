@@ -620,9 +620,6 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning,unused-const-variable,)
 # Disable format-truncation warnings
 KBUILD_CFLAGS   += $(call cc-disable-warning,format-truncation,)
 
-# Kill all maybe-uninitialized warnings
-KBUILD_CFLAGS	+= $(call cc-disable-warning,maybe-uninitialized,)
-
 # Disable all buggy detection warnings
 KBUILD_CFLAGS   += $(call cc-disable-warning,incompatible-pointer-types,)
 KBUILD_CFLAGS   += $(call cc-disable-warning,unused-const-variable,)
