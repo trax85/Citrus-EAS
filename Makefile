@@ -242,8 +242,8 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 CCACHE      := $(shell which ccache)
 HOSTCC       = $(CCACHE) gcc
 HOSTCXX      = $(CCACHE) g++
-HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89
-HOSTCXXFLAGS = -O2
+HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 $(OPT) -fomit-frame-pointer -std=gnu89
+HOSTCXXFLAGS = -O2 $(OPT)
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -378,10 +378,7 @@ KBUILD_CPPFLAGS := -D__KERNEL__
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
-		   -g0 -DNDEBUG -fmodulo-sched -fivopts \
-		   -fmodulo-sched-allow-regmoves \
-		   -fno-asynchronous-unwind-tables \
-		   -Wno-format-security -Wno-format \
+		   -Wno-format-security \
 		   -fno-delete-null-pointer-checks \
 		   -std=gnu89 -fdiagnostics-color=always
 
@@ -603,9 +600,35 @@ else
 KBUILD_CFLAGS	+= -O2
 endif
 
-###########################
-# FLASH OPTMIZATION SETUP #
-###########################
+######################
+# OPTIMIZATION SETUP #
+######################
+
+# Dumb optimizations stuffs
+OPT := 	$(call cc-option,-fgcse-after-reload,) \
+		$(call cc-option,-fgraphite,) \
+		$(call cc-option,-fgraphite-identity,) \
+		$(call cc-option,-fivopts,) \
+		$(call cc-option,-floop-block,) \
+		$(call cc-option,-floop-interchange,) \
+		$(call cc-option,-floop-interchange,) \
+		$(call cc-option,-floop-strip-mine,) \
+		$(call cc-option,-fmodulo-sched,) \
+		$(call cc-option,-fmodulo-sched-allow-regmoves,) \
+		$(call cc-option,-fpeel-loops,) \
+		$(call cc-option,-fpredictive-commoning,) \
+		$(call cc-option,-ftree-loop-distribution,) \
+		$(call cc-option,-ftree-loop-distribute-patterns,) \
+		$(call cc-option,-ftree-loop-if-convert,) \
+		$(call cc-option,-ftree-loop-linear,) \
+		$(call cc-option,-ftree-loop-vectorize,) \
+		$(call cc-option,-ftree-partial-pre,) \
+		$(call cc-option,-ftree-slp-vectorize,) \
+		$(call cc-option,-funswitch-loops,) \
+		$(call cc-option,-fvect-cost-model,)
+
+# Append kbuild flags
+KBUILD_CFLAGS	+= -g0 -DNDEBUG $(OPT)
 
 # Strip linker
 LDFLAGS		+= --strip-debug -O2
@@ -613,9 +636,6 @@ LDFLAGS		+= --strip-debug -O2
 # These flags need a special toolchain so split them off
 KBUILD_CFLAGS	+= $(call cc-option,-mlow-precision-recip-sqrt,) \
 		   $(call cc-option,-mpc-relative-literal-loads,)
-
-# Disable unused-constant-variable warnings
-KBUILD_CFLAGS	+= $(call cc-disable-warning,unused-const-variable,)
 
 # Disable format-truncation warnings
 KBUILD_CFLAGS   += $(call cc-disable-warning,format-truncation,)
@@ -626,9 +646,6 @@ KBUILD_CFLAGS   += $(call cc-disable-warning,unused-const-variable,)
 
 # Disable misleading warnings
 KBUILD_CFLAGS   += $(call cc-disable-warning,misleading-indentation,)
-
-# Disable format-truncation warnings
-KBUILD_CFLAGS   += $(call cc-disable-warning,format-truncation,)
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
 
