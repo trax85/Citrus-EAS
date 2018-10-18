@@ -57,7 +57,7 @@
 #define EXT_CLASS_D_DELAY_DELTA 2000
 
 static int spk_pa_gpio = -1;
-static int value = 0;
+static int value = 1;
 
 static void amplifier_enable(void) {
   int i = 0;
