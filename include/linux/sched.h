@@ -1160,7 +1160,7 @@ struct sched_avg {
 	 */
 	u32 runnable_avg_sum, avg_period, running_avg_sum;
 };
- 
+
 #ifdef CONFIG_SCHEDSTATS
 struct sched_statistics {
 	u64			wait_start;
@@ -1354,11 +1354,12 @@ struct task_struct {
 	atomic_t usage;
 	unsigned int flags;	/* per process flags, defined below */
 	unsigned int ptrace;
-        #ifdef VENDOR_EDIT
-        //huruihuan add for kill task in D status
+	#ifdef VENDOR_EDIT
+	  //huruihuan add for kill task in D status
 	unsigned int kill_flag;
 	struct timespec ttu;
-        #endif
+	 #endif
+
 #ifdef CONFIG_SMP
 	struct llist_node wake_entry;
 	int on_cpu;
