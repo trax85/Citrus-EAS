@@ -1348,11 +1348,6 @@ static int lpm_cpuidle_enter(struct cpuidle_device *dev,
 		goto exit;
 	}
 
-	pwr_params = &cluster->cpu->levels[idx].pwr;
-	sched_set_cpu_cstate(smp_processor_id(), idx + 1, &drv->states[idx+1],
-		pwr_params->energy_overhead, pwr_params->latency_us);
-
-	trace_cpu_idle_enter(idx);
 	cpu_prepare(cluster, idx, true);
 
 	cluster_prepare(cluster, cpumask, idx, true);
@@ -1372,8 +1367,6 @@ static int lpm_cpuidle_enter(struct cpuidle_device *dev,
 	lpm_stats_cpu_exit(idx, success);
 	cluster_unprepare(cluster, cpumask, idx, true);
 	cpu_unprepare(cluster, idx, true);
-
-	sched_set_cpu_cstate(smp_processor_id(), 0, &drv->states[0], 0, 0);
 
 	time = ktime_to_ns(ktime_get()) - time;
 	do_div(time, 1000);
@@ -1822,4 +1815,3 @@ void lpm_cpu_hotplug_enter(unsigned int cpu)
 
 	msm_cpu_pm_enter_sleep(mode, false);
 }
-
