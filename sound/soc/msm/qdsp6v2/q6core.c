@@ -90,6 +90,12 @@ static int32_t aprv2_core_fn_q(struct apr_client_data *data, void *priv)
 
 		payload1 = data->payload;
 
+		if (data->payload_size < 2 * sizeof(uint32_t)) {
+			pr_err("%s: payload has invalid size %d\n",
+				__func__, data->payload_size);
+			return -EINVAL;
+		}
+
 		switch (payload1[0]) {
 
 		case AVCS_CMD_GET_LOW_POWER_SEGMENTS_INFO:
@@ -106,6 +112,11 @@ static int32_t aprv2_core_fn_q(struct apr_client_data *data, void *priv)
 	}
 
 	case AVCS_CMDRSP_GET_LOW_POWER_SEGMENTS_INFO:
+		if (data->payload_size < sizeof(uint32_t)) {
+			pr_err("%s: payload has invalid size %d\n",
+				__func__, data->payload_size);
+			return -EINVAL;
+		}
 		payload1 = data->payload;
 		pr_info("%s: cmd = AVCS_CMDRSP_GET_LOW_POWER_SEGMENTS_INFO num_segments = 0x%x\n",
 					__func__, payload1[0]);
@@ -140,6 +151,11 @@ static int32_t aprv2_core_fn_q(struct apr_client_data *data, void *priv)
 	}
 
 	case AVCS_CMDRSP_ADSP_EVENT_GET_STATE:
+		if (data->payload_size < sizeof(uint32_t)) {
+			pr_err("%s: payload has invalid size %d\n",
+				__func__, data->payload_size);
+			return -EINVAL;
+		}
 		payload1 = data->payload;
 		q6core_lcl.param = payload1[0];
 		pr_debug("%s: Received ADSP get state response 0x%x\n",
@@ -172,6 +188,11 @@ static int32_t aprv2_core_fn_q(struct apr_client_data *data, void *priv)
 		break;
 
 	 case AVCS_CMDRSP_GET_LICENSE_VALIDATION_RESULT:
+		 if (data->payload_size < sizeof(uint32_t)) {
+			 pr_err("%s: payload has invalid size %d\n",
+				 __func__, data->payload_size);
+			 return -EINVAL;
+		 }
 		payload1 = data->payload;
 		pr_debug("%s: cmd = LICENSE_VALIDATION_RESULT, result = 0x%x\n",
 				__func__, payload1[0]);
@@ -629,4 +650,3 @@ static void __exit core_exit(void)
 module_exit(core_exit);
 MODULE_DESCRIPTION("ADSP core driver");
 MODULE_LICENSE("GPL v2");
-
