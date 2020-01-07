@@ -227,7 +227,7 @@
 		mas_crypto: mas-crypto {
 			cell-id = <MSM_BUS_MASTER_CRYPTO_CORE0>;
 			label = "mas-crypto";
-			qcom,buswidth = <8>;
+			qcom,buswidth = <16>;
 			qcom,agg-ports = <1>;
 			qcom,ap-owned;
 			qcom,qport = <0>;
@@ -417,7 +417,7 @@
 		mas_jpeg: mas-jpeg {
 			cell-id = <MSM_BUS_MASTER_JPEG>;
 			label = "mas-jpeg";
-			qcom,buswidth = <16>;
+			qcom,buswidth = <32>;
 			qcom,agg-ports = <1>;
 			qcom,ap-owned;
 			qcom,qport = <6>;
@@ -432,7 +432,7 @@
 		mas_oxili: mas-oxili {
 			cell-id = <MSM_BUS_MASTER_GRAPHICS_3D>;
 			label = "mas-oxili";
-			qcom,buswidth = <16>;
+			qcom,buswidth = <32>;
 			qcom,agg-ports = <2>;
 			qcom,ap-owned;
 			qcom,qport = <16 17>;
@@ -448,7 +448,7 @@
 		mas_mdp0: mas-mdp0 {
 			cell-id = <MSM_BUS_MASTER_MDP_PORT0>;
 			label = "mas-mdp0";
-			qcom,buswidth = <16>;
+			qcom,buswidth = <32>;
 			qcom,agg-ports = <1>;
 			qcom,ap-owned;
 			qcom,qport = <7>;
@@ -464,7 +464,7 @@
 		mas_mdp1: mas-mdp1 {
 			cell-id = <MSM_BUS_MASTER_MDP_PORT1>;
 			label = "mas-mdp1";
-			qcom,buswidth = <16>;
+			qcom,buswidth = <32>;
 			qcom,agg-ports = <1>;
 			qcom,ap-owned;
 			qcom,qport = <13>;
@@ -493,7 +493,7 @@
 		mas_venus_0: mas-venus-0 {
 			cell-id = <MSM_BUS_MASTER_VIDEO_P0>;
 			label = "mas-venus-0";
-			qcom,buswidth = <16>;
+			qcom,buswidth = <32>;
 			qcom,agg-ports = <1>;
 			qcom,ap-owned;
 			qcom,qport = <8>;
@@ -508,7 +508,7 @@
 		mas_venus_1: mas-venus-1 {
 			cell-id = <MSM_BUS_MASTER_VIDEO_P1>;
 			label = "mas-venus-1";
-			qcom,buswidth = <16>;
+			qcom,buswidth = <32>;
 			qcom,agg-ports = <1>;
 			qcom,ap-owned;
 			qcom,qport = <14>;
@@ -523,7 +523,7 @@
 		mas_vfe_0: mas-vfe-0 {
 			cell-id = <MSM_BUS_MASTER_VFE0>;
 			label = "mas-vfe-0";
-			qcom,buswidth = <16>;
+			qcom,buswidth = <32>;
 			qcom,agg-ports = <1>;
 			qcom,ap-owned;
 			qcom,qport = <9>;
@@ -538,7 +538,7 @@
 		mas_vfe_1: mas-vfe-1 {
 			cell-id = <MSM_BUS_MASTER_VFE1>;
 			label = "mas-vfe-1";
-			qcom,buswidth = <16>;
+			qcom,buswidth = <32>;
 			qcom,agg-ports = <1>;
 			qcom,ap-owned;
 			qcom,qport = <15>;
