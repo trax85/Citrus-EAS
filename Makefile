@@ -628,6 +628,10 @@ KBUILD_CFLAGS	+= $(call cc-option,-mlow-precision-recip-sqrt,) \
 include $(srctree)/arch/$(SRCARCH)/Makefile
 
 KBUILD_CFLAGS	+= $(call cc-disable-warning,frame-address,)
+# Disable format-truncation warnings
+KBUILD_CFLAGS   += $(call cc-disable-warning,format-truncation,)
+# Disable cpp
+KBUILD_CFLAGS   += $(call cc-disable-warning,cpp,)
 
 ifdef CONFIG_READABLE_ASM
 # Disable optimizations that make assembler listings hard to read.
