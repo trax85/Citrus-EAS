@@ -614,6 +614,22 @@ OPT := 	$(call cc-option,-fgcse-after-reload,) \
 		$(call cc-option,-ftree-slp-vectorize,) \
 		$(call cc-option,-funswitch-loops,) \
 		$(call cc-option,-fvect-cost-model,)
+		
+KBUILD_CFLAGS += $(call cc-disable-warning, format-truncation) \
+		 $(call cc-disable-warning, format-overflow) \
+		 $(call cc-disable-warning, int-in-bool-context) \
+		 $(call cc-disable-warning, address-of-packed-member) \
+		 $(call cc-disable-warning, attribute-alias) \
+		 $(call cc-disable-warning, address-of-packed-member) \
+		 $(call cc-disable-warning, psabi) \
+		 $(call cc-disable-warning, restrict) \
+		 $(call cc-disable-warning, stringop-overflow) \
+		 $(call cc-disable-warning, zero-length-bounds) \
+		 $(call cc-disable-warning, attribute-alias) \
+		 $(call cc-disable-warning, packed-not-aligned) \
+		 $(call cc-disable-warning, stringop-truncation) \
+		 $(call cc-disable-warning, maybe-uninitialized,) \
+		 $(call cc-disable-warning, unused-const-variable)
 
 # Append kbuild flags
 KBUILD_CFLAGS	+= -g0 -DNDEBUG $(OPT)
