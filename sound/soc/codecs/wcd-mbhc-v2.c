@@ -289,7 +289,8 @@ static int wcd_event_notify(struct notifier_block *self, unsigned long val,
 	struct snd_soc_codec *codec = mbhc->codec;
 	bool micbias2 = false;
 	bool micbias1 = false;
-
+	u8 fsm_en = 0;
+	
 	pr_debug("%s: event %s (%d)\n", __func__,
 		 wcd_mbhc_get_event_string(event), event);
 	if (mbhc->mbhc_cb->micbias_enable_status) {
