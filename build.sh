@@ -47,9 +47,9 @@ make kenzo_defconfig
 #gcc 11
 #export CROSS_COMPILE="/home/nesara/gcc-arm64/bin/aarch64-elf-"
 #gcc 9.2 
-#export CROSS_COMPILE="/home/nesara/aarch64-elf-gcc/bin/aarch64-elf-"
+export CROSS_COMPILE="/home/nesara/aarch64-elf-gcc/bin/aarch64-elf-"
 #gcc 6.5
-export CROSS_COMPILE="/home/nesara/gcc_linaro_6.5/bin/aarch64-linux-gnu-"
+#export CROSS_COMPILE="/home/nesara/gcc_linaro_6.5/bin/aarch64-linux-gnu-"
 
 export KBUILD_BUILD_USER="trax85"
 #
