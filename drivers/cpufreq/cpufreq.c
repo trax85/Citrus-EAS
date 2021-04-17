@@ -31,6 +31,21 @@
 #include <linux/pm_opp.h>
 #include <trace/events/power.h>
 
+extern ssize_t gpu_clock_get_vdd(char *buf);
+extern ssize_t gpu_clock_set_vdd(const char *buf, size_t count);
+
+static ssize_t show_GPU_mV_table(struct cpufreq_policy *policy, char *buf)
+{
+	return gpu_clock_get_vdd(buf);
+}
+
+static ssize_t store_GPU_mV_table(struct cpufreq_policy *policy,
+	const char *buf, size_t count)
+{
+	return gpu_clock_set_vdd(buf, count);
+}
+
+
 /**
  * The "cpufreq driver" - the arch- or hardware-dependent low
  * level driver of CPUFreq support, and its spinlock. This lock
@@ -309,6 +324,7 @@ static inline void adjust_jiffies(unsigned long val, struct cpufreq_freqs *ci)
 static DEFINE_PER_CPU(unsigned long, freq_scale) = SCHED_CAPACITY_SCALE;
 static DEFINE_PER_CPU(unsigned long, max_freq_cpu);
 static DEFINE_PER_CPU(unsigned long, max_freq_scale) = SCHED_CAPACITY_SCALE;
+static DEFINE_PER_CPU(unsigned long, min_freq_scale);
 
 static void
 scale_freq_capacity(const cpumask_t *cpus, unsigned long cur_freq,
@@ -357,6 +373,34 @@ scale_max_freq_capacity(const cpumask_t *cpus, unsigned long policy_max_freq)
 unsigned long cpufreq_scale_max_freq_capacity(struct sched_domain *sd, int cpu)
 {
 	return per_cpu(max_freq_scale, cpu);
+}
+
+static void
+scale_min_freq_capacity(const cpumask_t *cpus, unsigned long policy_min_freq)
+{
+ 	unsigned long scale, max_freq;
+ 	int cpu = cpumask_first(cpus);
+
+ 	if (cpu >= nr_cpu_ids)
+ 		return;
+
+ 	max_freq = per_cpu(max_freq_cpu, cpu);
+
+ 	if (!max_freq)
+ 		return;
+
+ 	scale = (policy_min_freq << SCHED_CAPACITY_SHIFT) / max_freq;
+
+ 	for_each_cpu(cpu, cpus)
+ 		per_cpu(min_freq_scale, cpu) = scale;
+
+ 	pr_debug("cpus %*pbl policy min freq/max freq %lu/%lu kHz min freq scale %lu\n",
+ 		 cpumask_pr_args(cpus), policy_min_freq, max_freq, scale);
+}
+
+unsigned long cpufreq_scale_min_freq_capacity(struct sched_domain *sd, int cpu)
+{
+ 	return per_cpu(min_freq_scale, cpu);
 }
 
 static void __cpufreq_notify_transition(struct cpufreq_policy *policy,
@@ -849,7 +893,7 @@ static ssize_t show_bios_limit(struct cpufreq_policy *policy, char *buf)
 	return sprintf(buf, "%u\n", policy->cpuinfo.max_freq);
 }
 
-#ifdef CONFIG_VOLTAGE_CONTROL
+#ifdef CONFIG_MACH_XIAOMI_KENZO
 extern ssize_t cpu_clock_get_vdd(char *buf);
 extern ssize_t cpu_clock_set_vdd(const char *buf, size_t count);
 
@@ -879,7 +923,8 @@ cpufreq_freq_attr_rw(scaling_min_freq);
 cpufreq_freq_attr_rw(scaling_max_freq);
 cpufreq_freq_attr_rw(scaling_governor);
 cpufreq_freq_attr_rw(scaling_setspeed);
-#ifdef CONFIG_VOLTAGE_CONTROL
+#ifdef CONFIG_MACH_XIAOMI_KENZO
+cpufreq_freq_attr_rw(GPU_mV_table);
 cpufreq_freq_attr_rw(UV_mV_table);
 #endif
 
@@ -895,8 +940,9 @@ static struct attribute *default_attrs[] = {
 	&scaling_driver.attr,
 	&scaling_available_governors.attr,
 	&scaling_setspeed.attr,
-#ifdef CONFIG_VOLTAGE_CONTROL
+#ifdef CONFIG_MACH_XIAOMI_KENZO
 	&UV_mV_table.attr,
+	&GPU_mV_table.attr,
 #endif
 	NULL
 };
@@ -1885,6 +1931,9 @@ void cpufreq_resume(void)
 	if (!cpufreq_driver)
 		return;
 
+	if (unlikely(!cpufreq_suspended))
+ 		return;
+
 	cpufreq_suspended = false;
 
 	if (!has_target())
@@ -2384,6 +2433,7 @@ static int cpufreq_set_policy(struct cpufreq_policy *policy,
 			CPUFREQ_NOTIFY, new_policy);
 
 	scale_max_freq_capacity(policy->cpus, policy->max);
+	scale_min_freq_capacity(policy->cpus, policy->min);
 
 	policy->min = new_policy->min;
 	policy->max = new_policy->max;
