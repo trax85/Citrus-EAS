@@ -253,15 +253,15 @@
 		gpu_handle = <&msm_gpu>;
                 qcom,gfxfreq-corner =
 			<         0   0 >,
-			< 133333333   1 >,  /* Min SVS   */
-			< 200000000   2 >,  /* Low SVS   */
-			< 266666667   3 >,  /* SVS Minus */
-			< 300000000   4 >,  /* SVS       */
-			< 366670000   5 >,  /* SVS Plus  */
-			< 432000000   6 >,  /* NOM       */
-			< 480000000   7 >,  /* Turbo     */
-			< 550000000   8 >,  /* Super Turbo */
-			< 600000000   9 >;  /* Super Turbo */
+			< 200000000   1 >,  /* Min SVS   */
+			< 266666667   2 >,  /* Low SVS   */
+ 			< 366670000   3 >,  /* SVS Minus */
+ 			< 400000000   4 >,  /* SVS       */
+ 			< 432000000   5 >,  /* SVS Plus  */
+ 			< 480000000   6 >,  /* NOM       */
+ 			< 550000000   7 >,  /* Turbo     */
+ 			< 600000000   8 >,  /* Super Turbo */
+ 			< 710000000   9 >;  /* Super Turbo V2 */
 		#clock-cells = <1>;
 	};
 
