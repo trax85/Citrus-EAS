@@ -371,7 +371,7 @@ static int cpu_boost_init(void)
 		pr_err("cpu-boost: Failed to set SCHED_FIFO!\n");
 
 	/* Now bind it to the cpumask */
-	kthread_bind_mask(cpu_boost_worker_thread, &sys_bg_mask);
+	//kthread_bind_mask(cpu_boost_worker_thread, &sys_bg_mask);
 
 	/* Wake it up! */
 	wake_up_process(cpu_boost_worker_thread);
