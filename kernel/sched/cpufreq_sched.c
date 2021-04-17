@@ -311,7 +311,7 @@ static int cpufreq_sched_policy_init(struct cpufreq_policy *policy)
 			goto err;
 		}
 		get_task_struct(gd->task);
-		kthread_bind_mask(gd->task, policy->related_cpus);
+		//kthread_bind_mask(gd->task, policy->related_cpus);
 		wake_up_process(gd->task);
 		init_irq_work(&gd->irq_work, cpufreq_sched_irq_work);
 	}
