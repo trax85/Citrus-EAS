@@ -192,7 +192,7 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
 # "make" in the configured kernel build directory always uses that.
 # Default value for CROSS_COMPILE is not to prefix executables
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
-ARCH		?= $(SUBARCH)
+ARCH		?= arm64
 CROSS_COMPILE	?= $(CONFIG_CROSS_COMPILE:"%"=%)
 
 # Architecture as present in compile.h
@@ -346,15 +346,11 @@ ifneq ($(wildcard $(CROSS_COMPILE)ld.bfd),)
 LD		= $(CROSS_COMPILE)ld.bfd
 endif
 
-# Use the wrapper for the compiler.  This wrapper scans for new
-# warnings and causes the build to stop upon encountering them.
-CC		= $(srctree)/scripts/gcc-wrapper.py $(REAL_CC)
-
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
 CFLAGS_MODULE   =
 AFLAGS_MODULE   =
-LDFLAGS_MODULE  =
+LDFLAGS_MODULE  = --strip-debug
 CFLAGS_KERNEL	=
 AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
@@ -586,19 +582,6 @@ all: vmlinux
 # Tell gcc to never replace conditional load with a non-conditional one
 KBUILD_CFLAGS	+= $(call cc-option,--param=allow-store-data-races=0)
 
-# Kill all maybe-uninitialized warnings
-KBUILD_CFLAGS	+= $(call cc-disable-warning,maybe-uninitialized,)
-
-# Disable all buggy detection warnings
-KBUILD_CFLAGS   += $(call cc-disable-warning,incompatible-pointer-types,)
-KBUILD_CFLAGS   += $(call cc-disable-warning,unused-const-variable,)
-
-# Disable misleading warnings
-KBUILD_CFLAGS   += $(call cc-disable-warning,misleading-indentation,)
-
-# Disable format-truncation warnings
-KBUILD_CFLAGS   += $(call cc-disable-warning,format-truncation,)
-
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os
 else
@@ -683,7 +666,13 @@ KBUILD_CFLAGS += $(stackp-flag)
 
 # These warnings generated too much noise in a regular build.
 # Use make W=1 to enable them (see scripts/Makefile.build)
-KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
+KBUILD_CFLAGS   += $(call cc-disable-warning, unused-but-set-variable)
+KBUILD_CFLAGS	+= $(call cc-disable-warning, format-truncation)
+KBUILD_CFLAGS	+= $(call cc-disable-warning, format-overflow)
+KBUILD_CFLAGS   += $(call cc-disable-warning, stringop-truncation)
+KBUILD_CFLAGS   += $(call cc-disable-warning, sizeof-pointer-memaccess)
+KBUILD_CFLAGS   += $(call cc-disable-warning, packed-not-aligned)
+KBUILD_CFLAGS   += $(call cc-disable-warning, stringop-overflow)
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-const-variable)
 
 ifdef CONFIG_FRAME_POINTER
