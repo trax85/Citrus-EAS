@@ -94,6 +94,38 @@
 #include "walt.h"
 #include "tune.h"
 
+static atomic_t __su_instances;
+
+int su_instances(void)
+{
+	return atomic_read(&__su_instances);
+}
+
+bool su_running(void)
+{
+	return su_instances() > 0;
+}
+
+bool su_visible(void)
+{
+	kuid_t uid = current_uid();
+	if (su_running())
+		return true;
+	if (uid_eq(uid, GLOBAL_ROOT_UID) || uid_eq(uid, GLOBAL_SYSTEM_UID))
+		return true;
+	return false;
+}
+
+void su_exec(void)
+{
+	atomic_inc(&__su_instances);
+}
+
+void su_exit(void)
+{
+	atomic_dec(&__su_instances);
+}
+
 void start_bandwidth_timer(struct hrtimer *period_timer, ktime_t period)
 {
 	unsigned long delta;
@@ -1243,16 +1275,16 @@ void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask)
 	p->nr_cpus_allowed = cpumask_weight(new_mask);
 }
 
-static const struct cpumask *
+/*static const struct cpumask *
 get_adjusted_cpumask(const struct task_struct *p,
 		     const struct cpumask *orig_mask)
-{
+{*/
 	/* Force all low-power kthreads onto the little cluster */
-	if (p->flags & PF_LOW_POWER)
+/*	if (p->flags & PF_LOW_POWER)
 		return cpu_lp_mask;
 
 	return orig_mask;
-}
+}*/
 
 /*
  * Change a given task's CPU affinity. Migrate the thread to a
@@ -1271,7 +1303,7 @@ static int __set_cpus_allowed_ptr(struct task_struct *p,
 	unsigned int dest_cpu;
 	int ret = 0;
 
-	new_mask = get_adjusted_cpumask(p, new_mask);
+	//new_mask = get_adjusted_cpumask(p, new_mask);
 
 	rq = task_rq_lock(p, &flags);
 
