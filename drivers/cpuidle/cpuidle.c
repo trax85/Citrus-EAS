@@ -77,6 +77,8 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
 	int entered_state;
 
 	struct cpuidle_state *target_state = &drv->states[index];
+	ktime_t time_start, time_end;
+	s64 diff;
 
 	entered_state = target_state->enter(dev, drv, index);
 
