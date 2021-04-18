@@ -37,8 +37,8 @@ echo Y > /sys/module/mdss_mdp/parameters/frame_boost
 #Workqueue
 echo Y > /sys/module/workqueue/parameters/power_efficient
 #Scheduler
-echo zen > /sys/block/mmcblk0/queue/scheduler
-echo zen > /sys/block/mmcblk1/queue/scheduler
+echo cfq > /sys/block/mmcblk0/queue/scheduler
+echo cfq > /sys/block/mmcblk1/queue/scheduler
 #Adreno-Idler-Driver
 echo Y > /sys/module/adreno_idler/parameters/adreno_idler_active
 echo 80 > /sys/module/adreno_idler/parameters/adreno_idler_downdifferential
