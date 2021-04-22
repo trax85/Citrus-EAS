@@ -3755,7 +3755,7 @@ int msm_thermal_get_freq_plan_size(uint32_t cluster, unsigned int *table_len)
 int msm_thermal_get_cluster_voltage_plan(uint32_t cluster, uint32_t *table_ptr)
 {
 	int i = 0, corner = 0;
-	struct opp *opp = NULL;
+	struct dev_pm_opp *opp = NULL;
 	unsigned int table_len = 0;
 	struct device *cpu_dev = NULL;
 	struct cluster_info *cluster_ptr = NULL;

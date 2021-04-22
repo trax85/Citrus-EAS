@@ -68,7 +68,7 @@ static struct clk_lookup clock_tbl_a7[] = {
 
 static void print_opp_table(int a7_cpu)
 {
-	struct opp *oppfmax, *oppfmin;
+	struct dev_pm_opp *oppfmax, *oppfmin;
 	unsigned long apc0_fmax = a7ssmux.c.fmax[a7ssmux.c.num_fmax - 1];
 	unsigned long apc0_fmin = a7ssmux.c.fmax[1];
 
