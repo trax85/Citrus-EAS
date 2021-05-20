@@ -127,12 +127,10 @@ static bool ip_tunnel_key_match(const struct ip_tunnel_parm *p,
 }
 
 /* Fallback tunnel: no source, no destination, no key, no options
-
    Tunnel hash table:
    We require exact key match i.e. if a key is present in packet
    it will match only tunnel with the same key; if it is not present,
    it will match only keyless tunnel.
-
    All keysless packets, if not matched configured keyless tunnels
    will match fallback tunnel.
    Given src, dst and key, find appropriate for input tunnel.
@@ -293,9 +291,8 @@ static struct net_device *__ip_tunnel_create(struct net *net,
 	} else {
 		if (strlen(ops->kind) > (IFNAMSIZ - 3))
 			goto failed;
-		}
-		strlcpy(name, ops->kind, IFNAMSIZ);
-		strncat(name, "%d", 2);
+		strcpy(name, ops->kind);
+		strcat(name, "%d");
 	}
 
 	ASSERT_RTNL();
