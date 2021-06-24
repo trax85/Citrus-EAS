@@ -2271,6 +2271,9 @@ void a5xx_err_callback(struct adreno_device *adreno_dev, int bit)
 	case A5XX_INT_UCHE_TRAP_INTR:
 		KGSL_DRV_CRIT_RATELIMIT(device, "UCHE: Trap interrupt\n");
 		break;
+	case A5XX_INT_GPMU_VOLTAGE_DROOP:
+		KGSL_DRV_CRIT_RATELIMIT(device, "GPMU: Voltage droop\n");
+		break;
 	default:
 		KGSL_DRV_CRIT_RATELIMIT(device, "Unknown interrupt %d\n", bit);
 	}
@@ -2313,7 +2316,9 @@ void a5x_gpc_err_int_callback(struct adreno_device *adreno_dev, int bit)
 	 (1 << A5XX_INT_CP_RB) |			\
 	 (1 << A5XX_INT_RBBM_ATB_BUS_OVERFLOW) |	\
 	 (1 << A5XX_INT_UCHE_OOB_ACCESS)) |		\
-	 (1 << A5XX_INT_UCHE_TRAP_INTR)
+	 (1 << A5XX_INT_UCHE_TRAP_INTR) |		\
+	 (1 << A5XX_INT_GPMU_FIRMWARE) |                \
+	 (1 << A5XX_INT_GPMU_VOLTAGE_DROOP)
 
 
 static struct adreno_irq_funcs a5xx_irq_funcs[] = {

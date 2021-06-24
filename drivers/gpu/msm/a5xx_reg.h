@@ -43,6 +43,8 @@
 #define A5XX_INT_UCHE_TRAP_INTR          25
 #define A5XX_INT_DEBBUS_INTR_0           26
 #define A5XX_INT_DEBBUS_INTR_1           27
+#define A5XX_INT_GPMU_VOLTAGE_DROOP      28
+#define A5XX_INT_GPMU_FIRMWARE           29
 #define A5XX_INT_GPMU_ERROR              28
 #define A5XX_INT_GPMU_THERMAL            29
 #define A5XX_INT_ISDB_CPU_IRQ            30
