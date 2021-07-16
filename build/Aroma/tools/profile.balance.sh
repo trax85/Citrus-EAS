@@ -8,27 +8,27 @@ function write() {
 }
 
 #Core-A53
-echo schedutil > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-echo 400000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+echo sched > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+echo 691200 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 echo 1401600 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-echo 2000 > /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us
-echo 750 > /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us
-echo 0 > /sys/devices/system/cpu/cpu0/cpufreq/schedutil/io_wait_boost
-echo 0 > /sys/devices/system/cpu/cpu0/cpufreq/schedutil/exp_util
+#echo 2500 > /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us
+#echo 500 > /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us
+#echo 0 > /sys/devices/system/cpu/cpu0/cpufreq/schedutil/io_wait_boost
+#echo 0 > /sys/devices/system/cpu/cpu0/cpufreq/schedutil/exp_util
 #Core-A72 
-echo schedutil > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+echo sched > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
 echo 400000 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
 echo 1804800 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
-echo 4000 > /sys/devices/system/cpu/cpu4/cpufreq/schedutil/up_rate_limit_us
-echo 700 > /sys/devices/system/cpu/cpu4/cpufreq/schedutil/down_rate_limit_us
-echo 0 > /sys/devices/system/cpu/cpu4/cpufreq/schedutil/io_wait_boost
-echo 0 > /sys/devices/system/cpu/cpu4/cpufreq/schedutil/exp_util
+#echo 4500 > /sys/devices/system/cpu/cpu4/cpufreq/schedutil/up_rate_limit_us
+#echo 400 > /sys/devices/system/cpu/cpu4/cpufreq/schedutil/down_rate_limit_us
+#echo 0 > /sys/devices/system/cpu/cpu4/cpufreq/schedutil/io_wait_boost
+#echo 0 > /sys/devices/system/cpu/cpu4/cpufreq/schedutil/exp_util
 #Cpu-Boost
 echo 1 > /sys/module/cpu_boost/parameters/input_boost_enabled
 echo 0:0 1:0 2:0 3:0 4:0 5:0 > /sys/module/cpu_boost/parameters/input_boost_freq
-echo 100 > /sys/module/cpu_boost/parameters/input_boost_ms
+echo 250 > /sys/module/cpu_boost/parameters/input_boost_ms
 echo 0 > /sys/module/cpu_boost/parameters/input_devfreq_boost
-echo 50 > /sys/module/cpu_boost/parameters/dynamic_stune_boost
+echo 35 > /sys/module/cpu_boost/parameters/dynamic_stune_boost
 #Frame-Boost
 echo N > /sys/module/mdss_mdp/parameters/frame_boost
 #Workqueue
@@ -65,7 +65,7 @@ echo 1 > /sys/class/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load
 echo -10 > /dev/stune/background/schedtune.boost
 echo 0 > /dev/stune/rt/schedtune.boost
 echo -10 > /dev/stune/foreground/schedtune.boost
-echo 0 > /dev/stune/top-app/schedtune.boost
+#echo 0 > /dev/stune/top-app/schedtune.boost
 echo 0 > /dev/stune/top-app/schedtune.prefer_idle
 echo 0 > /dev/stune/foreground/schedtune.prefer_idle
 echo 0 > /dev/stune/background/schedtune.prefer_idle

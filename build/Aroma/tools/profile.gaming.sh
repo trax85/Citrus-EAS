@@ -8,11 +8,12 @@ function write() {
 }
 
 #Core-A53
-echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+echo endurance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 echo 691200 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 echo 1401600 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+sleep 1
 #Core-A72
-echo performance > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+echo endurance > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
 echo 998400 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
 echo 1804800 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
 #Cpu-Boost
@@ -53,7 +54,7 @@ echo 1 > /sys/class/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load
 #ScheduleTuning
 echo 0 > /dev/stune/background/schedtune.boost
 echo 0 > /dev/stune/foreground/schedtune.boost
-echo 0 > /dev/stune/top-app/schedtune.boost
+#echo 0 > /dev/stune/top-app/schedtune.boost
 echo 1 > /dev/stune/top-app/schedtune.prefer_idle
 echo 1 > /dev/stune/foreground/schedtune.prefer_idle
 echo 0 > /dev/stune/background/schedtune.prefer_idle

@@ -62,9 +62,9 @@ ROM=$(cat /tmp/aroma/rom.prop | cut -d '=' -f2)
 echo "# USER TWEAKS" >> $CONFIGFILE
 if [ $ROM -eq 2 ] || [ $ROM -eq 1 ]; then
  if [ $ZRAM -eq 1 ]; then
-    echo "service usertweaks /system/bin/sh /system/etc/Citrus.sh" >> $CONFIGFILE
+    echo "service usertweaks /system/bin/sh /system/etc/citrus.sh" >> $CONFIGFILE
  else
-    echo "service usertweaks /system/bin/sh /system/etc/Citrus-zram.sh" >> $CONFIGFILE
+    echo "service usertweaks /system/bin/sh /system/etc/citrus-zram.sh" >> $CONFIGFILE
  fi
 	echo "class main" >> $CONFIGFILE
 	echo "group root" >> $CONFIGFILE
@@ -90,9 +90,9 @@ if [ $ROM -eq 2 ] || [ $ROM -eq 1 ]; then
 	echo "on property:sys.boot_completed=1" >> $CONFIGFILE
 else
  if [ $ZRAM -eq 1 ]; then
-    echo "service usertweaks /system/bin/sh /vendor/etc/Citrus.sh" >> $CONFIGFILE
+    echo "service usertweaks /system/bin/sh /vendor/etc/citrus.sh" >> $CONFIGFILE
  else
-    echo "service usertweaks /system/bin/sh /vendor/etc/Citrus-zram.sh" >> $CONFIGFILE
+    echo "service usertweaks /system/bin/sh /vendor/etc/citrus-zram.sh" >> $CONFIGFILE
  fi
 	echo "class main" >> $CONFIGFILE
 	echo "group root" >> $CONFIGFILE
@@ -121,9 +121,10 @@ echo "" >> $CONFIGFILE
 COLOR=$(cat /tmp/aroma/color.prop | cut -d '=' -f2)
 echo "# KCAL" >> $CONFIGFILE
 if [ $COLOR == 1 ]; then
-	echo "write /sys/devices/platform/kcal_ctrl.0/kcal_sat 285" >> $CONFIGFILE
+	echo "write /sys/devices/platform/kcal_ctrl.0/kcal_sat 280" >> $CONFIGFILE
+	echo "write /sys/devices/platform/kcal_ctrl.0/kcal_min 250" >> $CONFIGFILE
 	echo "write /sys/devices/platform/kcal_ctrl.0/kcal_val 256" >> $CONFIGFILE
-	echo "write /sys/devices/platform/kcal_ctrl.0/kcal_cont 265" >> $CONFIGFILE
+	echo "write /sys/devices/platform/kcal_ctrl.0/kcal_cont 252" >> $CONFIGFILE
 	echo "write /sys/devices/platform/kcal_ctrl.0/kcal \"254 252 230"\" >> $CONFIGFILE
 elif [ $COLOR == 2 ]; then
 	echo "write /sys/devices/platform/kcal_ctrl.0/kcal_sat 269" >> $CONFIGFILE
@@ -157,18 +158,10 @@ fi
 echo "" >> $CONFIGFILE
 echo "# DISABLE BCL & CORE CTL" >> $CONFIGFILE
 echo "write /sys/module/msm_thermal/core_control/enabled 0" >> $CONFIGFILE
-echo "write /sys/devices/soc.0/qcom,bcl.56/mode disable" >> $CONFIGFILE
-echo "write /sys/devices/soc.0/qcom,bcl.56/hotplug_mask 0" >> $CONFIGFILE
-echo "write /sys/devices/soc.0/qcom,bcl.56/hotplug_soc_mask 0" >> $CONFIGFILE
-echo "write /sys/devices/soc.0/qcom,bcl.56/mode disable" >> $CONFIGFILE
-echo "" >> $CONFIGFILE
-echo "# BRING CORES ONLINE" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/online 1" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu1/online 1" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu2/online 1" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu3/online 1" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/online 1" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu5/online 1" >> $CONFIGFILE
+#echo "write /sys/devices/soc.0/qcom,bcl.56/mode enable" >> $CONFIGFILE
+#echo "write /sys/devices/soc.0/qcom,bcl.56/hotplug_mask 0" >> $CONFIGFILE
+#echo "write /sys/devices/soc.0/qcom,bcl.56/hotplug_soc_mask 0" >> $CONFIGFILE
+echo "write /sys/devices/soc.0/qcom,bcl.56/mode disabled" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# WAKE GESTURES" >> $CONFIGFILE
 echo "write /sys/android_touch/doubletap2wake " $DT2W >> $CONFIGFILE
@@ -204,12 +197,12 @@ VOLT=$(cat /tmp/aroma/uv.prop | cut -d '=' -f2)
 if [ $VOLT == 1 ]; then
 	echo "# CPU & GPU EXTREME UV" >> $CONFIGFILE
 	echo "write /sys/devices/system/cpu/cpu0/cpufreq/GPU_mV_table \"680 700 760 800 860 910 970 1030 1050\"" >> $CONFIGFILE
-	echo "write /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table \"540 540 580 760 860 910 930 940 950 680 700 720 780 810 810 820 900 960 970\"" >> $CONFIGFILE
+	echo "write /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table \"540 540 580 760 860 910 930 940 950 680 700 720 780 810 820 830 910 960 980\"" >> $CONFIGFILE
 	echo "" >> $CONFIGFILE
 elif [ $VOLT == 2 ]; then
 	echo "# CPU & GPU HEAVY UV" >> $CONFIGFILE
-	echo "write /sys/devices/system/cpu/cpu0/cpufreq/GPU_mV_table \"680 700 760 800 860 910 970 1030 1050\"" >> $CONFIGFILE
-	echo "write /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table \"680 710 760 780 880 910 930 940 950 680 700 740 800 810 810 820 920 980 990\"" >> $CONFIGFILE
+	echo "write /sys/devices/system/cpu/cpu0/cpufreq/GPU_mV_table \"700 710 760 810 870 930 970 1030 1050\"" >> $CONFIGFILE
+	echo "write /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table \"700 710 760 820 890 910 930 940 960 700 710 740 800 810 820 840 920 980 990\"" >> $CONFIGFILE
 	echo "" >> $CONFIGFILE
 elif [ $VOLT == 3 ]; then
 	echo "# CPU & GPU LIGHT UV" >> $CONFIGFILE
@@ -221,7 +214,7 @@ echo "# MISC" >> $CONFIGFILE
 echo "setprop video.accelerate.hw 1" >> $CONFIGFILE
 echo "setprop debug.composition.type c2d" >> $CONFIGFILE
 echo "write /sys/kernel/debug/debug_enabled N" >> $CONFIGFILE
-
+echo "write /sys/modules/qpnp_smbcharger/parameters/debug_mask 0" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# USB FASTCHARGE" >> $CONFIGFILE
 echo "write /sys/kernel/fast_charge/force_fast_charge $USB" >> $CONFIGFILE
@@ -249,4 +242,6 @@ echo "start spectrum" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "on property:persist.spectrum.profile=3" >> $CONFIGFILE
 echo "start spectrum" >> $CONFIGFILE
+echo "# STOP POWERHALS SERVICE" >> $CONFIGFILE
+echo "stop perfd" >> $CONFIGFILE
 echo "" >> $CONFIGFILE

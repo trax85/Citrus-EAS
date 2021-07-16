@@ -10,6 +10,8 @@ ini_set("force_colorspace","rgba");
 fontresload( "0", "ttf/Roboto-Regular.ttf", "11" );
 fontresload( "1", "ttf/Roboto-Regular.ttf", "15" ); 
 
+splash(2000, "citrus");
+
 theme("zetsubou");
 
 menubox(

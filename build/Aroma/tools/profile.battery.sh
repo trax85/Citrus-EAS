@@ -62,7 +62,7 @@ echo 0 > /sys/class/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load
 #ScheduleTuning
 echo -50 > /dev/stune/background/schedtune.boost
 echo -10 > /dev/stune/foreground/schedtune.boost
-echo 0 > /dev/stune/top-app/schedtune.boost
+#echo 0 > /dev/stune/top-app/schedtune.boost
 echo 0 > /dev/stune/top-app/schedtune.prefer_idle
 echo 0 > /dev/stune/background/schedtune.prefer_idle
 echo 0 > /dev/stune/foreground/schedtune.prefer_idle
