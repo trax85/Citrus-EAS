@@ -165,7 +165,16 @@ config CPU_FREQ_DEFAULT_GOV_BLU_SCHEDUTIL
  	help
  	  Use the 'blu_schedutil' CPUFreq governor by default. If unsure,
  	  have a look at the help section of that governor. The fallback
- 	  
+ 	  governor will be 'performance'.
+ 	   
+config CPU_FREQ_DEFAULT_GOV_ENDURANCE
+       bool "endurance"
+       select CPU_FREQ_GOV_ENDURANCE
+       help
+         Use the CPUFreq governor 'endurance' as default. If unsure,
+ 	  have a look at the help section of that governor. The fallback
+ 	  governor will be 'performance'.
+	  
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -178,6 +187,20 @@ config CPU_FREQ_GOV_PERFORMANCE
 	  module will be called cpufreq_performance.
 
 	  If in doubt, say Y.
+	  
+config CPU_FREQ_GOV_ENDURANCE
+       tristate "'endurance' governor"
+       help
+         This cpufreq governor sets the frequency statically to the
+         highest available CPU frequency supported by
+         the CPU and reduces max frequency depending on the temperature
+         reports from sensors.
+
+         To compile this driver as a module, choose M here: the
+         module will be called cpufreq_endurance.
+
+         If in doubt, say Y.
+         
 
 config CPU_FREQ_GOV_POWERSAVE
 	tristate "'powersave' governor"
