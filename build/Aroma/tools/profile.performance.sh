@@ -33,6 +33,9 @@ echo 60 > /sys/module/cpu_boost/parameters/dynamic_stune_boost
 echo Y > /sys/module/mdss_mdp/parameters/frame_boost
 #Workqueue
 echo N > /sys/module/workqueue/parameters/power_efficient
+#DVFS
+echo cpufreq > /sys/class/devfreq/cpubw/governor
+echo 35 > /sys/class/devfreq/cpubw/polling_interval
 #Scheduler
 echo deadline > /sys/block/mmcblk0/queue/scheduler
 echo deadline > /sys/block/mmcblk1/queue/scheduler
@@ -50,11 +53,6 @@ echo 5 > /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/default_pwrlevel
 #MMC-HOST
 echo 1 > /sys/class/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load
 echo 1 > /sys/class/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load
-#DDR-Bus
-#echo 7104 > /sys/class/devfreq/gpubw/min_freq
-#echo 805 > /sys/class/devfreq/cpubw/min_freq
-#echo 805 > /sys/class/devfreq/mincpubw/min_freq
-#echo 307200 > /sys/class/devfreq/qcom,cci.49/min_freq
 #Walt-Toggles
 #echo 1 > /proc/sys/kernel/sched_use_walt_cpu_util
 #echo 1 > /proc/sys/kernel/sched_use_walt_task_util
@@ -62,8 +60,8 @@ echo 1 > /sys/class/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load
 echo -5 > /dev/stune/background/schedtune.boost
 echo 50 > /dev/stune/foreground/schedtune.boost
 #echo 100 > /dev/stune/top-app/schedtune.boost
-echo 1 > /dev/stune/top-app/schedtune.prefer_idle
-echo 1 > /dev/stune/foreground/schedtune.prefer_idle
+echo 0 > /dev/stune/top-app/schedtune.prefer_idle
+echo 0 > /dev/stune/foreground/schedtune.prefer_idle
 echo 0 > /dev/stune/background/schedtune.prefer_idle
 #Cpusets
 echo 0-5 > /dev/cpuset/top-app/cpus

@@ -55,6 +55,9 @@ if [[ $(getprop sys.boot_completed) -eq 1 ]]; then
 	echo N > /sys/module/mdss_mdp/parameters/frame_boost
 	#Workqueue
 	echo Y > /sys/module/workqueue/parameters/power_efficient
+	#DVFS
+	echo cpufreq > /sys/class/devfreq/cpubw/governor
+	echo 100 > /sys/class/devfreq/cpubw/polling_interval
 	#Scheduler
 	echo maple > /sys/block/mmcblk0/queue/scheduler
 	echo maple > /sys/block/mmcblk1/queue/scheduler
@@ -75,11 +78,6 @@ if [[ $(getprop sys.boot_completed) -eq 1 ]]; then
 	#MMC-HOST
 	echo 1 > /sys/class/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load
 	echo 1 > /sys/class/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load
-	#DDR-Bus
-	#echo 0 > /sys/class/devfreq/gpubw/min_freq
-	#echo 805 > /sys/class/devfreq/cpubw/min_freq
-	#echo 805 > /sys/class/devfreq/mincpubw/min_freq
-	#echo 307200 > /sys/class/devfreq/qcom,cci.49/min_freq
 	#Walt-Toggles
 	#echo 1 > /proc/sys/kernel/sched_use_walt_cpu_util
 	#echo 1 > /proc/sys/kernel/sched_use_walt_task_util
@@ -91,7 +89,6 @@ if [[ $(getprop sys.boot_completed) -eq 1 ]]; then
 	echo 0 > /dev/stune/top-app/schedtune.prefer_idle
 	echo 0 > /dev/stune/foreground/schedtune.prefer_idle
 	echo 0 > /dev/stune/background/schedtune.prefer_idle
-	echo 0 > /dev/stune/rt/schedtune.prefer_idle
 	#Cpusets
 	echo 0-5 > /dev/cpuset/top-app/cpus
 	echo 1 > /dev/cpuset/top-app/sched_load_balance
@@ -136,6 +133,9 @@ if [[ $(getprop sys.boot_completed) -eq 1 ]]; then
 	echo Y > /sys/module/mdss_mdp/parameters/frame_boost
 	#Workqueue
 	echo N > /sys/module/workqueue/parameters/power_efficient
+	#DVFS
+	echo cpufreq > /sys/class/devfreq/cpubw/governor
+	echo 200 > /sys/class/devfreq/cpubw/polling_interval
 	#Scheduler
 	echo deadline > /sys/block/mmcblk0/queue/scheduler
 	echo deadline > /sys/block/mmcblk1/queue/scheduler
@@ -153,11 +153,6 @@ if [[ $(getprop sys.boot_completed) -eq 1 ]]; then
 	#MMC-HOST
 	echo 1 > /sys/class/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load
 	echo 1 > /sys/class/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load
-	#DDR-Bus
-	#echo 7104 > /sys/class/devfreq/gpubw/min_freq
-	#echo 805 > /sys/class/devfreq/cpubw/min_freq
-	#echo 805 > /sys/class/devfreq/mincpubw/min_freq
-	#echo 307200 > /sys/class/devfreq/qcom,cci.49/min_freq
 	#Walt-Toggles
 	#echo 1 > /proc/sys/kernel/sched_use_walt_cpu_util
 	#echo 1 > /proc/sys/kernel/sched_use_walt_task_util
@@ -210,6 +205,9 @@ if [[ $(getprop sys.boot_completed) -eq 1 ]]; then
 	echo N > /sys/module/mdss_mdp/parameters/frame_boost
 	#Workqueue
 	echo Y > /sys/module/workqueue/parameters/power_efficient
+	#DVFS
+	echo cpufreq > /sys/class/devfreq/cpubw/governor
+	echo 35 > /sys/class/devfreq/cpubw/polling_interval
 	#Scheduler
 	echo noop > /sys/block/mmcblk0/queue/scheduler
 	echo noop > /sys/block/mmcblk1/queue/scheduler 
@@ -230,18 +228,13 @@ if [[ $(getprop sys.boot_completed) -eq 1 ]]; then
 	#MMC-HOST
 	echo 0 > /sys/class/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load
 	echo 0 > /sys/class/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load
-	#DDR-Bus
-	#echo 0 > /sys/class/devfreq/gpubw/min_freq
-	#echo 805 > /sys/class/devfreq/cpubw/min_freq
-	#echo 805 > /sys/class/devfreq/mincpubw/min_freq
-	#echo 307200 > /sys/class/devfreq/qcom,cci.49/min_freq
 	#Walt-Toggles
 	#echo 0 > /proc/sys/kernel/sched_use_walt_cpu_util
 	#echo 0 > /proc/sys/kernel/sched_use_walt_task_util
 	#ScheduleTuning
-	echo -50 > /dev/stune/background/schedtune.boost
-	echo -10 > /dev/stune/foreground/schedtune.boost
-	echo 0 > /dev/stune/top-app/schedtune.boost
+	echo -5 > /dev/stune/background/schedtune.boost
+	echo 50 > /dev/stune/foreground/schedtune.boost
+	#echo 0 > /dev/stune/top-app/schedtune.boost
 	echo 0 > /dev/stune/top-app/schedtune.prefer_idle
 	echo 0 > /dev/stune/background/schedtune.prefer_idle
 	echo 0 > /dev/stune/foreground/schedtune.prefer_idle
@@ -265,23 +258,26 @@ if [[ $(getprop sys.boot_completed) -eq 1 ]]; then
     else [[ $value -eq 3 ]];
 
     	#Core-A53
-    	echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    	echo endurance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 	echo 691200 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 	echo 1401600 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 	#Core-A72
-	echo performance > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+	echo endurance > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
 	echo 998400 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
 	echo 1804800 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
 	#Cpu-Boost
 	echo 1 > /sys/module/cpu_boost/parameters/input_boost_enabled 
 	echo 0:0 1:0 2:0 3:0 4:0 5:0 > /sys/module/cpu_boost/parameters/input_boost_freq
-	echo 0 > /sys/module/cpu_boost/parameters/input_boost_ms
+	echo 10 > /sys/module/cpu_boost/parameters/input_boost_ms
 	echo 1 > /sys/module/cpu_boost/parameters/input_devfreq_boost
 	echo 0 > /sys/module/cpu_boost/parameters/dynamic_stune_boost
 	#Frame-Boost
 	echo Y > /sys/module/mdss_mdp/parameters/frame_boost
 	#Workqueue
 	echo N > /sys/module/workqueue/parameters/power_efficient
+	#DVFS
+	echo cpufreq > /sys/class/devfreq/cpubw/governor
+	echo 34 > /sys/class/devfreq/cpubw/bw_hwmon/io_percent
 	#Scheduler
 	echo cfq > /sys/block/mmcblk0/queue/scheduler
 	echo cfq > /sys/block/mmcblk1/queue/scheduler
@@ -299,11 +295,6 @@ if [[ $(getprop sys.boot_completed) -eq 1 ]]; then
 	#MMC-HOST
 	echo 1 > /sys/class/mmc_host/mmc0/clk_scaling/scale_down_in_low_wr_load
 	echo 1 > /sys/class/mmc_host/mmc1/clk_scaling/scale_down_in_low_wr_load
-	#DDR-Bus
-	#echo 7104 > /sys/class/devfreq/gpubw/min_freq
-	#echo 1244 > /sys/class/devfreq/cpubw/min_freq
-	#echo 1244 > /sys/class/devfreq/mincpubw/min_freq
-	#echo 307200 > /sys/class/devfreq/qcom,cci.49/min_freq
 	#Walt-Toggles
 	#echo 1 > /proc/sys/kernel/sched_use_walt_cpu_util
 	#echo 1 > /proc/sys/kernel/sched_use_walt_task_util
@@ -320,7 +311,7 @@ if [[ $(getprop sys.boot_completed) -eq 1 ]]; then
 	echo 1 > /dev/cpuset/top-app/sched_relax_domain_level
 	echo 0-5 > /dev/cpuset/foreground/cpus
 	echo 1 > /dev/cpuset/foreground/sched_load_balance
-	echo 1 > /dev/cpuset/foreground/sched_relax_domain_level
+	echo 0 > /dev/cpuset/foreground/sched_relax_domain_level
 	echo 0-3 > /dev/cpuset/background/cpus
 	echo 0 > /dev/cpuset/background/sched_load_balance
 	echo 0 > /dev/cpuset/background/sched_relax_domain_level

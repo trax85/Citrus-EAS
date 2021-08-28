@@ -5709,8 +5709,6 @@ static bool cpu_overutilized(int cpu)
 	return __cpu_overutilized(cpu, 0);
 }
 
-static int cpu_util_wake(int cpu, struct task_struct *p);
-
 static unsigned long capacity_spare_wake(int cpu, struct task_struct *p)
 {
 	return max_t(long, capacity_of(cpu) - cpu_util_wake(cpu, p), 0);

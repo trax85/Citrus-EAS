@@ -32,6 +32,7 @@ extern struct target_nrg schedtune_target_nrg;
 unsigned int top_app_idx = 3;
 int default_topapp_boost = 0;
 struct cgroup_subsys_state *topapp_css;
+bool dynamic_schedtune_initialized = false;
 #endif /* CONFIG_DYNAMIC_STUNE_BOOST */
 
 /* Performance Boost region (B) threshold params */
@@ -786,9 +787,16 @@ boost_write(struct cgroup *cgrp, struct cftype *cft,
 int
 dynamic_boost_write(struct cgroup_subsys_state *css, int boost)
 {
+	/* if dynamic schedtune boost doesnt't have 
+	 * its topapp_css, return 
+	 */
 	struct schedtune *st = css_st(css);
 	unsigned threshold_idx;
 	int boost_pct;
+	
+	if (!unlikely(dynamic_schedtune_initialized))
+		return -EINVAL;
+
 
 	if (boost < -100 || boost > 100)
 		return -EINVAL;
@@ -852,6 +860,7 @@ schedtune_boostgroup_init(struct schedtune *st, int idx)
 	if (idx == top_app_idx) {
             topapp_css = &st->css;
             default_topapp_boost = st->boost;
+            dynamic_schedtune_initialized = true;
         }
 
 	pr_info("STUNE INIT: top app idx: %d\n", top_app_idx);
