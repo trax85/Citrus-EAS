@@ -48,6 +48,7 @@ make kenzo_defconfig
 #export CROSS_COMPILE="/home/nesara/gcc-arm64/bin/aarch64-elf-"
 #gcc 9.2 
 export CROSS_COMPILE="/home/nesara/toolchain/aarch64-elf-gcc/bin/aarch64-elf-"
+export CROSS_COMPILE_ARM32="/home/nesara/toolchain/aarch32-gcc/bin/arm-eabi-"
 #gcc 6.5
 #export CROSS_COMPILE="/home/nesara/gcc_linaro_6.5/bin/aarch64-linux-gnu-"
 
