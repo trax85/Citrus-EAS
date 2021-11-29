@@ -1334,7 +1334,6 @@ static int lpm_cpuidle_enter(struct cpuidle_device *dev,
 	bool success = true;
 	int idx = cpu_power_select(dev, cluster->cpu, &index);
 	const struct cpumask *cpumask = get_cpu_mask(dev->cpu);
-	struct power_params *pwr_params;
 
 	if (idx < 0) {
 		local_irq_enable();
