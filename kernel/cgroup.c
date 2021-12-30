@@ -4683,7 +4683,7 @@ int __init cgroup_init(void)
 	int i;
 	unsigned long key;
 
-	cg_link_pool = KMEM_CACHE(cgrp_cset_link, SLAB_HWCACHE_ALIGN | SLAB_PANIC);
+	cg_link_pool = KMEM_CACHE(cg_cgroup_link, SLAB_HWCACHE_ALIGN | SLAB_PANIC);
 
 	err = bdi_init(&cgroup_backing_dev_info);
 	if (err)
